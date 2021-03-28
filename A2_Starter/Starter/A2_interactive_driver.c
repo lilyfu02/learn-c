@@ -112,11 +112,10 @@ int main() {
       im = readPGMimage(name);
       if (im != NULL) {
         delete_BST(root);
-        root = NULL;
+        root = NULL;  //new_Quad( 0, 0, im->sx, im->sy, 0, im->sx );
         printf("Image loaded with size = %d x %d\n", im->sx, im->sy);
         sx = im->sx;
       }
-      printf( "I am here(6) now!\n");
     }
 
     if (choice == 7) {
@@ -125,8 +124,10 @@ int main() {
       } else {
         getInt("threshold [0-255]", &threshold);
         getInt("Number of times to split", &h);
-        for (i = 0; i < h; i++)
+
+        for (i = 0; i < h; i++) {
           root = split_tree(im, root, threshold);
+        }
       }
     }
 
@@ -140,6 +141,8 @@ int main() {
         getInt("mode (0/1/2)", &mode);
         im2 = copyImage(im);
         if (mode > 0) {
+          if( root == NULL ) 
+            printf("ERROR: root is null! \n");
           save_Quad(im2, root);
         }
         if (mode < 2) {

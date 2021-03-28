@@ -171,11 +171,10 @@ Quad *find_successor(Quad *right_child) {
    *
    * TODO: Implement this function
    */
-
   if(right_child -> left == NULL){
     return right_child;
   }else{
-    return find_successor(right_child -> left);
+    return find_successor(right_child-> left);
   } 
 }
 
@@ -190,34 +189,39 @@ Quad *BST_delete(Quad *root, int tx, int ty) {
    *
    * TODO: Implement this function
    */
- int the_key = tx+(ty * (root->sx));
- Quad* new_root = root;
- if(root != NULL){
-    if(root -> key > the_key){
-      root -> left = BST_delete(root->left,tx,ty);
-    }else if(root -> key < the_key){
-      root -> right = BST_delete(root->right, tx,ty);
+  if( root == NULL )
+    return NULL;
+
+  int key = tx+(ty * (root->sx));
+
+  if(key < root->key){
+    root->left = BST_delete(root->left,tx,ty);
+  }else if(key > root->key){
+    root->right = BST_delete(root->right, tx,ty);
+  }else{
+    Quad * new_root = root;
+
+    if(root->right == NULL){
+      new_root = root -> left;
+      free(root);
+    }else if(root->left == NULL){
+      new_root = root -> right;
+      free(root);
     }else{
-      if(root -> right == NULL){
-        new_root = root -> left;
-        free(root);
-      }else if(root -> left == NULL){
-        new_root = root -> right;
-        free(root);
-      }else{
-        root = find_successor(root -> right);
-        new_root -> tx = root -> tx;
-        new_root -> ty = root -> ty;
-        new_root -> key = root -> key;
-        new_root -> w = root -> w;
-        new_root -> h = root -> h;
-        new_root -> wsplit = root -> wsplit;
-        new_root -> sx = root -> sx;
-        new_root -> right = BST_delete(new_root -> right, new_root -> tx, new_root -> ty);
-      }
+      Quad * successor = find_successor(root -> right);
+      root -> tx = successor -> tx;
+      root -> ty = successor -> ty;
+      root -> key = successor-> key;
+      root -> w = successor-> w;
+      root -> h = successor-> h;
+      root -> wsplit = successor-> wsplit;
+      root -> sx = successor-> sx;
+      root -> right = BST_delete(root->right, successor->tx, successor->ty);
     }
+
+    root = new_root;
   }
-  return new_root;
+  return root;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -507,9 +511,11 @@ Quad *split_tree(Image *im, Quad *root, int threshold) {
   if( root == NULL )
     return NULL;
 
-  //pre-order
-  if( similar( im, root, threshold) == 0 ) {
+  //post-order
+  root->left = split_tree( im, root->left, threshold);
+  root->right = split_tree( im, root->right, threshold);
 
+  if( similar( im, root, threshold) == 0 ) {
     Quad * one = NULL;
     Quad * two = NULL;
     if( root->wsplit == 1 ) 
@@ -520,14 +526,10 @@ Quad *split_tree(Image *im, Quad *root, int threshold) {
       one = new_Quad( root->tx, root->ty, root->w, root->h/2, 1, root->sx);
       two = new_Quad( root->tx, root->ty+root->h/2, root->w, root->h-(root->h/2), 1, root->sx);
     }
-
     root = BST_delete(root, root->tx, root->ty);
     root = BST_insert(root, one);
     root = BST_insert(root, two);
   }
-
-  root->left = split_tree( im, root->left, threshold);
-  root->right = split_tree( im, root->right, threshold);
 
   return root;
 }
