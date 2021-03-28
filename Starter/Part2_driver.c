@@ -73,7 +73,7 @@ int main() {
   val = countCommands(head);
   if (val != 8) {
     printf("Test 2 failed, countCommands() did not return correct value.\n");
-    // return 1;
+    //return 1;
   }
   printf("Test 2 passed.\n");
 
