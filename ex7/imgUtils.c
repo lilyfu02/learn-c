@@ -3,8 +3,8 @@
 #include <string.h>
 
 #ifndef SIZEX
-  #define SIZEX 512
-  #define SIZEY 512
+  #define SIZEX 820
+  #define SIZEY 1200
 #endif
 
 // ----------------------------------------------------------------------------

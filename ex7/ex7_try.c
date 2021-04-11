@@ -14,8 +14,8 @@
 #include <stdlib.h>
 
 // Image dimensions
-#define SIZEX 1200
-#define SIZEY 1088
+#define SIZEX 820
+#define SIZEY 1200
 
 // Kernel size
 #define K_SIZE 3
@@ -129,7 +129,7 @@ int main()
 
   // We will store the values of the input image
   printf("Try to read file...\n");
-  readPGM("tartarglia.pgm", &data[0][0]);
+  readPGM("dad_1.pgm", &data[0][0]);
   printf("finlished read file.\n");
 
   // Test convolve()
@@ -156,7 +156,7 @@ int main()
   sobel(data, edge);
 
   // Write the values to the output image
-  writePGM("output-tar.pgm", &edge[0][0]);
+  writePGM("output-dad.pgm", &edge[0][0]);
 
   // Compare to the expected image
   readPGM("expected.pgm", &data[0][0]);

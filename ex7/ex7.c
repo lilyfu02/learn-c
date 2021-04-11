@@ -55,6 +55,7 @@ double convolve(unsigned char inp[SIZEY][SIZEX], int px, int py,
    *       easily if you wish to do so.
    */
   double sum = 0;
+  
   for(int x = 0; x<K_SIZE;x++){
     for(int y = 0; y<K_SIZE;y++){
       if(px+x-1 < 0 || px+x-1 >= SIZEX || py+y-1 < 0|| py+y-1 >=SIZEY){
