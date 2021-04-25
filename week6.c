@@ -40,7 +40,7 @@ int main(){
     node->number = 1003;
     strcpy(node, "blue");
     //2nd train
-    node->next
+    node->next;
 
     free(node);
     return 0;
